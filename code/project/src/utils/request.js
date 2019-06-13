@@ -3,7 +3,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-    get(url, params){
+    get(url, params = {}){
         return new Promise((resolve, reject) => {
             axios.get(url, {
                 params,
@@ -16,7 +16,7 @@ export default {
             })
         })
     },
-    post(url, params){
+    post(url, params = {}){
         return new Promise((resolve, reject) => {
             axios.post(url, qs.stringify( params ))
             .then(response => {

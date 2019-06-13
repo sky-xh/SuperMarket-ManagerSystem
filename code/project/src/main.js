@@ -11,10 +11,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 import request from '@/utils/request'
 // 引入Echarts
 import echarts from 'echarts'
+// 引入moment
+import moment from 'moment'
 
 // 挂载原型
 Vue.prototype.$http = request;
 Vue.prototype.$echarts = echarts;
+Vue.prototype.$moment = moment;
+
+// 汉化moment
+moment.locale('zh-cn');
 
 Vue.use(ElementUI);
 
