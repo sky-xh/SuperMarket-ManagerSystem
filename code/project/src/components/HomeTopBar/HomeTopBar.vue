@@ -3,7 +3,7 @@
         <el-row :gutter="20">
             <el-col :span="20">
                 <div class="grid-content bg-purple">
-                    <h3><span class="el-icon-menu"></span>&nbsp;军尼玛的管理系统</h3>    
+                    <h3><span class="el-icon-eleme"></span>&nbsp;军尼玛的管理系统</h3>    
                 </div>
             </el-col>
             <el-col :span="2">

@@ -3,7 +3,7 @@
         <el-menu
       default-active="$route.path"
       class="el-menu-vertical-demo"
-      background-color="#222"
+      background-color="#3d3d3d"
       text-color="#fff"
       active-text-color="rgb(64, 158, 255)"
       unique-opened

@@ -1,18 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// 引入重置样式表,公用样式表
-import './assets/css/reset.css'
+import './assets/css/reset.css'                   // 引入重置样式表,公用样式表
 import './assets/css/common.css'
-// 引入element-ui
-import ElementUI from 'element-ui'
+import ElementUI from 'element-ui'                // 引入element-ui
 import 'element-ui/lib/theme-chalk/index.css'
-// 引入封装好的axios
-import request from '@/utils/request'
-// 引入Echarts
-import echarts from 'echarts'
-// 引入moment
-import moment from 'moment'
+import request from '@/utils/request'             // 引入封装好的axios
+import echarts from 'echarts'                     // 引入Echarts
+import moment from 'moment'                       // 引入moment
 
 // 挂载原型
 Vue.prototype.$http = request;

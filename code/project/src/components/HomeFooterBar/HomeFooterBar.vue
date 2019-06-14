@@ -1,6 +1,6 @@
 <template>
     <div class="home-footer-bar">
-        &copy;CopyRight 2019 超市管理系统
+        &copy;CopyRight 9102 ManageSystem of JunNiMa
     </div>
 </template>
 

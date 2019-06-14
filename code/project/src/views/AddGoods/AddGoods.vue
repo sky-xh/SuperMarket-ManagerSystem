@@ -5,21 +5,19 @@
         <span>添加商品</span>
       </div>
       <el-form
-        :model="addGoodsForm"
-        :rules="rules"
         ref="addGoodsForm"
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="所属分类" prop="class">
-          <el-select v-model="addGoodsForm.class" placeholder="选择分类">
+        <el-form-item label="所属分类" prop="theclass">
+          <el-select v-model="addGoodsForm.theclass" placeholder="选择分类">
             <el-option label="日用品" value="日用品"></el-option>
             <el-option label="食品" value="食品"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商品条形码" prop="code">
           <el-input v-model="addGoodsForm.code"></el-input>
-          <el-button type="success">生成条形码</el-button>
+          <el-button type="success" @click="createRandomCode">生成条形码</el-button>
         </el-form-item>
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="addGoodsForm.name"></el-input>
@@ -61,8 +59,8 @@
           <el-input type="textarea" v-model="addGoodsForm.introduce"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">立即创建</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" @click="addGoods">立即创建</el-button>
+          <el-button @click='resetForm'>重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -74,38 +72,81 @@ export default {
   data() {
     return {
       addGoodsForm: {
-          class: '',
-          code: '',
-          name: '',
-          saleprice: '',
-          price: '',
-          originprice: '',
-          number: '',
-          weight: '',
-          unit: '',
-          preferential: '',
-          promote: '',
-          introduce: '',
+        theclass: "日用品",
+        code: "",
+        name: "海飞丝",
+        saleprice: "2",
+        price: "3",
+        originprice: "2",
+        number: "3",
+        weight: "2",
+        unit: "3",
+        preferential: "不享受",
+        promote: "禁用",
+        introduce: "123123"
       },
+
       rules: {
-          class: [
-                { required: true, message: '选择分类', trigger: 'change' },
-          ],
-          code: [
-                { required: true, message: '生成条形码', trigger: 'blur' },
-          ],
-          name: [
-                { required: true, message: '请输入商品名称', trigger: 'blur' },
-          ],
-          saleprice: [
-                { required: true, message: '请输入商品售价', trigger: 'blur' },
-          ]
+        theclass: [{ required: true, message: "选择分类", trigger: "change" }],
+        code: [{ required: true, message: "生成条形码", trigger: "blur" }],
+        name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+        saleprice: [
+          { required: true, message: "请输入商品售价", trigger: "blur" }
+        ]
       }
     };
+  },
+  methods: {
+    // 生成随机条形码
+    createRandomCode() {
+      this.addGoodsForm.code =
+        Math.floor(
+          (Math.random() + Math.floor(Math.random() * 12 + 1)) *
+            Math.pow(13, 12)
+        ) + "";
+    },
+    // 添加货物
+    addGoods() {
+      let params = {
+        theclass: this.addGoodsForm.theclass,
+        code: this.addGoodsForm.code,
+        name: this.addGoodsForm.name,
+        saleprice: this.addGoodsForm.saleprice,
+        price: this.addGoodsForm.price,
+        originprice: this.addGoodsForm.originprice,
+        number: this.addGoodsForm.number,
+        weight: this.addGoodsForm.weight,
+        unit: this.addGoodsForm.unit,
+        preferential: this.addGoodsForm.preferential,
+        promote: this.addGoodsForm.promote,
+        introduce: this.addGoodsForm.introduce
+      };
+      console.log(params);
+      this.$http
+        .post("http://127.0.0.1:3000/goods/addgoods", params)
+        .then(response => {
+          let { code, msg } = response;
+          if (code === 0) {
+            this.$message({
+              message: msg,
+              type: "success"
+            });
+          } else if (code === 1) {
+            this.$message.error(msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 重置表单
+    resetForm() {
+      this.$refs.addGoodsForm.resetFields();
+    },
+
   }
 };
 </script>
-
 <style lang="less">
-    @import url('./addgoods.less');
+@import url("./addgoods.less");
 </style>

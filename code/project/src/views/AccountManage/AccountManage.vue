@@ -28,11 +28,11 @@
         <div>
           <el-pagination
             :page-sizes="[3, 5, 10, 15]"
+            layout="total, sizes, prev, pager, next, jumper"
+            style="margin-top: 20px"
             :page-size="pagesize"
             :current-page="currentpage"
-            layout="total, sizes, prev, pager, next, jumper"
             :total="total"
-            style="margin-top: 20px"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           ></el-pagination>
@@ -71,19 +71,15 @@ import { constants } from "crypto";
 export default {
   data() {
     return {
-      accountManage: [],
-      dialogVisible: false,
-      ids: [],
-      dialogFormVisible: false,
-      form: {
-        name: "",
-        region: ""
-      },
-      formLabelWidth: "70px",
-      updateid: "",
+      accountManage: [],  //账号列表数据
+      ids: [],  //多选按钮的id集合
+      dialogFormVisible: false, //对话框状态
+      form: {name: "", region: ""}, //修改对话框表单属性
+      formLabelWidth: "70px",   //修改对话框宽度
+      updateid: "",   //保存选择的行的id
       currentpage: 1,  //当前页码
       pagesize: 3,     //多少条一页
-      total: 100,     //总条数
+      total: 0,     //总条数
     };
   },
   methods: {
@@ -113,7 +109,6 @@ export default {
           if (!response.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
-            // 调用自己
             this.queryaccountlists();
           }
 
