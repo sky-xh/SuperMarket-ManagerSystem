@@ -27,11 +27,14 @@
         </el-table>
         <div>
           <el-pagination
-            :page-sizes="[1, 5, 10, 20]"
-            :page-size="100"
+            :page-sizes="[3, 5, 10, 15]"
+            :page-size="pagesize"
+            :current-page="currentpage"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="20"
+            :total="total"
             style="margin-top: 20px"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
           ></el-pagination>
         </div>
         <div style="margin-top: 20px">
@@ -77,19 +80,22 @@ export default {
         region: ""
       },
       formLabelWidth: "70px",
-      updateid: ""
+      updateid: "",
+      currentpage: 1,  //当前页码
+      pagesize: 3,     //多少条一页
+      total: 100,     //总条数
     };
   },
   methods: {
     // 页面刷新加载数据
     queryaccountlists() {
+      let params = {
+        currentpage : this.currentpage,
+        pagesize : this.pagesize,
+      }
       this.$http
-        .get("http://127.0.0.1:3000/accounts/accountlists")
+        .get("http://127.0.0.1:3000/accounts/accountlists", params)
         .then(response => {
-          // 如果没有数据,直接返回
-          if (response == []) {
-            return;
-          }
           this.accountManage = response.map(list => {
             // 处理时间
             let ctime = this.$moment(list.createtime).format(
@@ -103,6 +109,14 @@ export default {
             };
             return item;
           });
+          // 如果没有数据,返回上一页并刷新列表
+          if (!response.length && this.currentpage !== 1) {
+            // 回到上一页
+            this.currentpage -= 1;
+            // 调用自己
+            this.queryaccountlists();
+          }
+
         })
         .catch(err => {
           console.log(err);
@@ -131,6 +145,8 @@ export default {
                 });
                 // 更新列表
                 this.queryaccountlists();
+                // 更新总条数
+                this.querytotal();
               } else {
                 this.$message.error(msg);
               }
@@ -154,6 +170,11 @@ export default {
     },
     // 批量删除
     delchooseitem() {
+      // 如果没有选择,阻止发送axios
+      if(this.ids.length === 0){
+        this.$message.error('没有选择任何选项!');
+        return;
+      }
       this.$confirm("你确定要删除吗?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -172,6 +193,8 @@ export default {
                 });
                 // 更新列表
                 this.queryaccountlists();
+                // 更新总条数
+                this.querytotal();
               } else if (code === 1) {
                 this.$message.error(msg);
               }
@@ -228,11 +251,34 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 获取多少条一页,并调用分页查询
+    handleSizeChange(val){
+      this.pagesize = val;
+      this.queryaccountlists();
+    },
+    // 获取当前页码,并调用分页查询
+    handleCurrentChange(val){
+      this.currentpage = val;
+      this.queryaccountlists();
+    },
+    // 查询总条数
+    querytotal(){
+      this.$http.get("http://127.0.0.1:3000/accounts/querytotal")
+      .then(response => {
+        this.total = response.length;
+      })
+      .catch(err => {
+        console.log(err);
+      })
     }
   },
   created() {
+    // 初始化总条数
+    this.querytotal();
+    // 初始化列表
     this.queryaccountlists();
-  }
+  },
 };
 </script>
 

@@ -21,9 +21,11 @@ router.post('/addaccount', (req, res) => {
         }
     })
 })
-// 查询账号
+// 查询账号(分页)
 router.get('/accountlists', (req, res) => {
-    let sql = `select * from account order by createtime desc`;
+	let {currentpage, pagesize} = req.query;
+	let page = (currentpage - 1) * pagesize;
+    let sql = `select * from account order by createtime desc limit ${page} , ${pagesize}`;
     connection.query(sql, (err, data) => {
         if(err) throw err;
         if(data.length != 0){
@@ -33,6 +35,15 @@ router.get('/accountlists', (req, res) => {
         }
     })
 })
+// 查询账号总条数
+router.get('/querytotal', (req, res) => {
+	let sql = `select * from account`;
+	connection.query(sql, (err, data) => {
+		if(err) throw err;
+		res.send(data);
+	})
+})
+
 // 删除某项
 router.get('/delaccount', (req, res) => {
     let { id } = req.query
@@ -84,4 +95,18 @@ router.post('/updateaccount',(req, res) => {
 		}
 	})
 })
+// 用户名重复性验证
+// router.get('/isrepeat', (req, res) => {
+// 	let {val} = req.query;
+// 	let sql = `select * from account where account = '${val}'`
+// 	connection.query(sql, (err, data) => {
+// 		if(err) throw err;
+// 		console.log(data)
+// 		if(data.length > 0){
+// 			res.send({code: true})
+// 		}else{
+// 			res.send({code: false})
+// 		}
+// 	})
+// })
 module.exports = router;

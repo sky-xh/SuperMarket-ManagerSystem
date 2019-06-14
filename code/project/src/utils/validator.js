@@ -7,3 +7,4 @@ export function passwordValidator(val){
     const reg = /^[a-zA-Z0-9_]{3,6}$/;;
     return reg.test(val);
 }
+

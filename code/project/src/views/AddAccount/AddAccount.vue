@@ -41,7 +41,6 @@
 <script>
 import { passwordValidator } from "@/utils/validator";
 import { constants } from "crypto";
-// import { addaccount } from '@/api/account';
 export default {
   data() {
     // 自定义验证
@@ -66,23 +65,24 @@ export default {
         callback();
       }
     };
+    const nameIsRepeat = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不能为空!"));
+      } else if (value.length < 3 || value.length > 5) {
+        callback(new Error("账号长度在 3 到 5 个字符!"));
+      }
+      callback();
+    };
     return {
       addAccountForm: {
         account: "",
         password: "",
         checkPass: "",
-        region: ""
+        region: "",
+        repeat: ""
       },
       rules: {
-        account: [
-          { required: true, message: "账号不能为空!", trigger: "blur" },
-          {
-            min: 3,
-            max: 5,
-            message: "账号长度在 3 到 5 个字符",
-            trigger: "blur"
-          }
-        ],
+        account: [{ required: true, validator: nameIsRepeat, trigger: "blur" }],
         password: [
           { required: true, validator: validatePass, trigger: "blur" }
         ],
@@ -127,7 +127,7 @@ export default {
     },
     resetForm() {
       this.$refs.addAccountForm.resetFields();
-    }
+    },
   }
 };
 </script>
