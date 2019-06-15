@@ -1,7 +1,6 @@
 # SuperMarket-ManagerSystem
-</br>
-###基于Vue + Vue-Router + element-ui + node.js(Express) + mysql的超市管理系统
-</br>
+### 基于Vue + Vue-Router + element-ui + node.js(Express) + mysql的超市管理系统
+***
 ![](https://img.shields.io/badge/author-JunJun-brightgreen.svg)
 ![](https://img.shields.io/badge/version-1.0-blue.svg)
 ![](https://img.shields.io/badge/build-85%25-red.svg)
