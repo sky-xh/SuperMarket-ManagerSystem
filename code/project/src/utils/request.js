@@ -1,9 +1,16 @@
 // 引入axios,qs
 import axios from 'axios'
 import qs from 'qs'
+import local from './localStorage'
 
 // 设置默认服务器域名
 axios.defaults.baseURL='http://127.0.0.1:3000';
+
+axios.interceptors.request.use(config => {
+    const token = local.get('this_is_not_token');
+    config.headers.authorization = `Bearer ${ token }`;
+    return config;
+})
 
 export default {
     get(url, params = {}){

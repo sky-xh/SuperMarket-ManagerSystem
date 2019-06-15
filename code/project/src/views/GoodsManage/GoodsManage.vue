@@ -112,7 +112,7 @@ export default {
         pagesize: this.pagesize
       };
       this.$http
-        .get("http://127.0.0.1:3000/goods/goodslists", params)
+        .get("/goods/goodslists", params)
         .then(response => {
           this.goods = response.map(list => {
             let item = {
@@ -130,6 +130,7 @@ export default {
           if (!response.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
+            this.querytotal();
             this.queryGoodsLists();
           }
         })
@@ -150,7 +151,7 @@ export default {
     // 查询总条数
     querytotal() {
       this.$http
-        .get("http://127.0.0.1:3000/goods/querytotal")
+        .get("/goods/querytotal")
         .then(response => {
           this.total = response.length;
         })
@@ -167,7 +168,7 @@ export default {
       })
         .then(() => {
           this.$http
-            .get("http://127.0.0.1:3000/goods/delgoods", { id })
+            .get("/goods/delgoods", { id })
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -199,7 +200,7 @@ export default {
       this.updateid = id;
       this.dialogFormVisible = true;
       this.$http
-        .get("http://127.0.0.1:3000/goods/returndata", { id })
+        .get("/goods/returndata", { id })
         .then(response => {
           this.form.code = response[0].code;
           this.form.name = response[0].name;
@@ -218,7 +219,7 @@ export default {
       let id = this.updateid;
       let { code, name, theclass, price, saleprice, number } = this.form;
       this.$http
-        .post("http://127.0.0.1:3000/goods/updategoods", {
+        .post("/goods/updategoods", {
           code,
           name,
           theclass,

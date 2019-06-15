@@ -103,7 +103,7 @@ export default {
             region: this.addAccountForm.region
           };
           this.$http
-            .post("http://127.0.0.1:3000/accounts/addaccount", params)
+            .post("/accounts/addaccount", params)
             .then(res => {
               let { code, msg } = res;
               if (code === 0) {

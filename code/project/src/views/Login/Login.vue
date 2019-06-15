@@ -34,6 +34,8 @@
 // 引入正则
 import { passwordValidator } from "../../utils/validator";
 import { constants } from "crypto";
+import local from '../../utils/localStorage'
+
 export default {
   data() {
     // 自定义密码验证
@@ -98,13 +100,24 @@ export default {
             account: this.loginForm.account,
             password: this.loginForm.password
           };
-          this.$message({
-            message: "恭喜你，登陆成功!",
-            type: "success"
-          });
-          console.log(params)
-          // alert('登陆成功!');
-          this.$router.push('/home')
+          this.$http.post('/login/check', params)
+          .then(res => {
+            let{code, msg, token} = res;
+            // token放入本次存储
+            local.set('this_is_not_token', token)
+            if(code === 0){
+              this.$message({
+                type: 'success',
+                message: msg,
+              })
+              this.$router.push('/home')
+            }else if(code === 1){
+              this.$message.error(msg)
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
         } else {
           this.$message.error('登陆失败!请重新登陆!');
           return false;

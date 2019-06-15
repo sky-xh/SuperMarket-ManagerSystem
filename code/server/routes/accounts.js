@@ -6,8 +6,29 @@ router.all('*', (req, res, next) => {
 	// 设置响应头解决跨域
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "content-type");
+    res.header("Access-Control-Allow-Headers", "authorization");
     next();
 })
+
+//////////////////////////////////////////////////////// 合法性验证
+// 密钥
+const secretKey = 'junnima';
+// 引入express-jwt
+const expressJwt = require('express-jwt');
+// 验证token合法性
+router.use(expressJwt({
+	secret: secretKey
+}).unless({
+	path: ['/login/check']	//拦截除此之外的地址
+}));
+// 路由拦截器
+router.use(function(err, req, res, next) {
+	if(err.name === 'UnauthorizedError'){
+		res.status(401).send('token不合法!');
+	}
+})
+////////////////////////////////////////////////////// 合法性验证结束
+
 // 添加账号`
 router.post('/addaccount', (req, res) => {
     let {account, password, region} = req.body;

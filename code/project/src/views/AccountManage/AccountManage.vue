@@ -90,7 +90,7 @@ export default {
         pagesize : this.pagesize,
       }
       this.$http
-        .get("http://127.0.0.1:3000/accounts/accountlists", params)
+        .get("/accounts/accountlists", params)
         .then(response => {
           this.accountManage = response.map(list => {
             // 处理时间
@@ -109,6 +109,7 @@ export default {
           if (!response.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
+            this.querytotal();
             this.queryaccountlists();
           }
 
@@ -130,7 +131,7 @@ export default {
       })
         .then(() => {
           this.$http
-            .get("http://127.0.0.1:3000/accounts/delaccount", { id })
+            .get("/accounts/delaccount", { id })
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -178,7 +179,7 @@ export default {
         .then(() => {
           let ids = this.ids;
           this.$http
-            .get("http://127.0.0.1:3000/accounts/delchooseitem", { ids })
+            .get("/accounts/delchooseitem", { ids })
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -212,7 +213,7 @@ export default {
       // 弹出对话框
       this.dialogFormVisible = true,
         this.$http
-          .get("http://127.0.0.1:3000/accounts/returndata", { id })
+          .get("/accounts/returndata", { id })
           .then(response => {
             this.form.name = response[0].account;
             this.form.region = response[0].region;
@@ -227,7 +228,7 @@ export default {
       let id = this.updateid;
       let { name, region } = this.form;
       this.$http
-        .post("http://127.0.0.1:3000/accounts/updateaccount", {
+        .post("/accounts/updateaccount", {
           name,
           region,
           id
@@ -261,7 +262,7 @@ export default {
     },
     // 查询总条数
     querytotal(){
-      this.$http.get("http://127.0.0.1:3000/accounts/querytotal")
+      this.$http.get("/accounts/querytotal")
       .then(response => {
         this.total = response.length;
       })

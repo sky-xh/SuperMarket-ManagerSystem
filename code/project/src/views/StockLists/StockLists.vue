@@ -117,6 +117,13 @@ export default {
               id: item.id
             };
           });
+          // 如果没有数据,返回上一页并刷新列表
+          if (!response.length && this.currentpage !== 1) {
+            // 回到上一页
+            this.currentpage -= 1;
+            this.querytotal();
+            this.querystock();
+          }
         })
         .catch(err => {
           console.log(err);

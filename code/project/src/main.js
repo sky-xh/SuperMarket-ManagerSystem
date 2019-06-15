@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import request from '@/utils/request'             // 引入封装好的axios
 import echarts from 'echarts'                     // 引入Echarts
 import moment from 'moment'                       // 引入moment
+import local from './utils/localStorage'
 
 
 
@@ -22,6 +23,19 @@ moment.locale('zh-cn');
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
+// 全局守卫
+router.beforeEach((to, from, next) => {
+  const token = local.get('this_is_not_token');
+  if(token){
+    next();
+  }else{
+    if(to.path === '/login'){
+      next()
+    }else{
+      next('/login')
+    }
+  }
+})
 
 new Vue({
   router,

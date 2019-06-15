@@ -9,6 +9,7 @@ var goodsRouter = require('./routes/goods.js');
 var vipaccountRouter = require('./routes/vipaccount.js');
 var stockRouter = require('./routes/stock.js');
 var salelistsRouter = require('./routes/salelists.js');
+var loginRouter = require('./routes/login.js');
 
 var app = express();
 
@@ -27,6 +28,8 @@ app.use('/goods', goodsRouter);
 app.use('/vipaccount', vipaccountRouter);
 app.use('/stock', stockRouter);
 app.use('/salelists', salelistsRouter);
+app.use('/login', loginRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

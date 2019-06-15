@@ -120,9 +120,8 @@ export default {
         promote: this.addGoodsForm.promote,
         introduce: this.addGoodsForm.introduce
       };
-      console.log(params);
       this.$http
-        .post("http://127.0.0.1:3000/goods/addgoods", params)
+        .post("/goods/addgoods", params)
         .then(response => {
           let { code, msg } = response;
           if (code === 0) {
