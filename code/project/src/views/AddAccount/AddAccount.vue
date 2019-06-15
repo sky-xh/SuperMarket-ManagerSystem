@@ -79,7 +79,7 @@ export default {
         password: "",
         checkPass: "",
         region: "",
-        repeat: ""
+        repeat: "",
       },
       rules: {
         account: [{ required: true, validator: nameIsRepeat, trigger: "blur" }],

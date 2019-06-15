@@ -12,12 +12,11 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="商品条形码" prop="code">
-          <el-input type="text" v-model="goodscheckout.code" autocomplete="off"></el-input>
+        <el-form-item label="商品名称" prop="name">
+          <el-input type="text" v-model="goodscheckout.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="数量" prop="number">
           <el-input type="text" v-model="goodscheckout.number" autocomplete="off"></el-input>
-          <span>&nbsp;(计重商品单位为千克)</span>
         </el-form-item>
         <el-form-item>
           <el-button type="primary">加入订单</el-button>
@@ -58,8 +57,8 @@ export default {
       goodscheckout: {},
       vipcode: {},
       rules: {
-        code: [
-          { required: true, message: "商品条形码不能为空!", trigger: "blur" }
+        name: [
+          { required: true, message: "商品名称不能为空!", trigger: "blur" }
         ],
         number: [
           { required: true, message: "商品数量不能为空!", trigger: "blur" }

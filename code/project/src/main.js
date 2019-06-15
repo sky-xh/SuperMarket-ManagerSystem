@@ -9,6 +9,8 @@ import request from '@/utils/request'             // 引入封装好的axios
 import echarts from 'echarts'                     // 引入Echarts
 import moment from 'moment'                       // 引入moment
 
+
+
 // 挂载原型
 Vue.prototype.$http = request;
 Vue.prototype.$echarts = echarts;

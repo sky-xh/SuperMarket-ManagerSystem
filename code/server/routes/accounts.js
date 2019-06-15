@@ -8,7 +8,7 @@ router.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Headers", "content-type");
     next();
 })
-// 添加账号
+// 添加账号`
 router.post('/addaccount', (req, res) => {
     let {account, password, region} = req.body;
     let sql = `INSERT INTO account(account, password, region) VALUES('${ account }','${ password }','${ region }')`
@@ -95,18 +95,4 @@ router.post('/updateaccount',(req, res) => {
 		}
 	})
 })
-// 用户名重复性验证
-// router.get('/isrepeat', (req, res) => {
-// 	let {val} = req.query;
-// 	let sql = `select * from account where account = '${val}'`
-// 	connection.query(sql, (err, data) => {
-// 		if(err) throw err;
-// 		console.log(data)
-// 		if(data.length > 0){
-// 			res.send({code: true})
-// 		}else{
-// 			res.send({code: false})
-// 		}
-// 	})
-// })
 module.exports = router;

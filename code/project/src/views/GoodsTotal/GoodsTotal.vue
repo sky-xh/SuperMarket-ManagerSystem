@@ -52,7 +52,7 @@ export default {
       // 绘制图表
       myChart.setOption({
     title: {
-        text: ''
+        text: '',
     },
     tooltip: {
         trigger: 'axis'

@@ -72,20 +72,19 @@ export default {
   data() {
     return {
       addGoodsForm: {
-        theclass: "日用品",
+        theclass: "",
         code: "",
-        name: "海飞丝",
-        saleprice: "2",
-        price: "3",
-        originprice: "2",
-        number: "3",
-        weight: "2",
-        unit: "3",
-        preferential: "不享受",
-        promote: "禁用",
-        introduce: "123123"
+        name: "",
+        saleprice: "",
+        price: "",
+        originprice: "",
+        number: "",
+        weight: "",
+        unit: "",
+        preferential: "",
+        promote: "",
+        introduce: "",
       },
-
       rules: {
         theclass: [{ required: true, message: "选择分类", trigger: "change" }],
         code: [{ required: true, message: "生成条形码", trigger: "blur" }],
@@ -143,8 +142,7 @@ export default {
     resetForm() {
       this.$refs.addGoodsForm.resetFields();
     },
-
-  }
+  },
 };
 </script>
 <style lang="less">

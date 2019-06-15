@@ -78,7 +78,7 @@ export default {
       formLabelWidth: "70px",   //修改对话框宽度
       updateid: "",   //保存选择的行的id
       currentpage: 1,  //当前页码
-      pagesize: 3,     //多少条一页
+      pagesize: 5,     //多少条一页
       total: 0,     //总条数
     };
   },
@@ -207,8 +207,10 @@ export default {
     },
     // 修改数据回填
     returndata(id) {
+      // 把id保存出来留给修改用
       this.updateid = id;
-      (this.dialogFormVisible = true),
+      // 弹出对话框
+      this.dialogFormVisible = true,
         this.$http
           .get("http://127.0.0.1:3000/accounts/returndata", { id })
           .then(response => {

@@ -39,15 +39,18 @@
         <el-table-column prop="counts" label="数量" width="170"></el-table-column>
         <el-table-column prop="realprice" label="实际售价" width="170"></el-table-column>
         <el-table-column prop="vip" label="优惠(促销/会员)" width="170"></el-table-column>
-        <el-table-column prop="return" label="退款" width="170"></el-table-column>
+        <el-table-column prop="returnmoney" label="退款" width="170"></el-table-column>
         <el-table-column prop="saleoftime" label="销售时间"></el-table-column>
       </el-table>
       <div>
         <el-pagination
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="10"
+          :page-sizes="[3, 5, 10, 15]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="200"
+          :page-size="pagesize"
+          :current-page="currentpage"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
     </el-card>
@@ -59,63 +62,62 @@ export default {
   data() {
     return {
       form: {},
-      salelists: [
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-        {
-          ordernumber: '021823874687',
-          name: '洗发水',
-          counts: '3',
-          realprice: '24',
-          vip: '2.00元/无',
-          return: '无退款',
-          saleoftime: '2019-6-18',
-        },
-      ]
+      salelists: [],
+      pagesize: 5,
+      currentpage: 1,
+      total: 0,
     };
+  },
+  methods: {
+    handleSizeChange(val){
+      this.pagesize = val;
+      this.querylists();
+    },
+    handleCurrentChange(val){
+      this.currentpage = val;
+      this.querylists();
+    },
+    // 数据加载
+    querylists(){
+      // 获取页码,页量
+      let params = {
+        pagesize: this.pagesize,
+        currentpage: this.currentpage
+      };
+      this.$http.get('/salelists/quertlists', params)
+      .then(response => {
+          this.salelists = response.map(item => {
+            return {
+              ordernumber: item.ordernumber,
+              name: item.name,
+              counts: item.counts,
+              realprice: item.realprice,
+              vip: item.vip,
+              returnmoney: item.returnmoney,
+              saleoftime: item.saleoftime,
+              id: item.id,
+            };
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 查询总条数
+    querytotal() {
+      this.$http
+        .get("/salelists/totallists")
+        .then(response => {
+          this.total = response.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+  },
+  mounted(){
+    this.querytotal();
+    this.querylists();
   }
 };
 </script>
