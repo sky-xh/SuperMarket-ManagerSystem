@@ -7,15 +7,16 @@
       <el-form :inline="true" :model="search" class="demo-form-inline">
         <el-form-item label="选择分类 :">
           <el-select v-model="search.region" placeholder="选择分类">
-            <el-option label="优乐美" value="优乐美"></el-option>
-            <el-option label="茅台" value="茅台"></el-option>
+            <el-option label="饮品" value="饮品"></el-option>
+            <el-option label="食品" value="食品"></el-option>
+            <el-option label="日用品" value="日用品"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="关键字 :">
           <el-input v-model="search.key" placeholder="商品名称,条形码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click='filterCheck()'>查询</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="goods" stripe style="width: 100%; margin-bottom:20px;">
@@ -109,12 +110,16 @@ export default {
     queryGoodsLists() {
       let params = {
         currentpage: this.currentpage,
-        pagesize: this.pagesize
+        pagesize: this.pagesize,
+        region: this.search.region,
+        key: this.search.key,
       };
       this.$http
         .get("/goods/goodslists", params)
         .then(response => {
-          this.goods = response.map(list => {
+          let { total, data} = response;
+          this.total = total;
+          this.goods = data.map(list => {
             let item = {
               code: list.code,
               name: list.name,
@@ -148,17 +153,6 @@ export default {
       this.currentpage = val;
       this.queryGoodsLists();
     },
-    // 查询总条数
-    querytotal() {
-      this.$http
-        .get("/goods/querytotal")
-        .then(response => {
-          this.total = response.length;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     // 删除
     delaccount(id) {
       this.$confirm("你确定要删除吗?", "温馨提示", {
@@ -176,8 +170,6 @@ export default {
                   message: msg,
                   type: "success"
                 });
-                // 初始化总条数
-                this.querytotal();
                 // 初始化列表
                 this.queryGoodsLists();
               } else {
@@ -244,11 +236,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 过滤查询
+    filterCheck(){
+       this.queryGoodsLists();
     }
   },
   created() {
-    // 初始化总条数
-    this.querytotal();
     // 初始化列表
     this.queryGoodsLists();
   }

@@ -37,18 +37,42 @@ router.all('*', (req, res, next) => {
  })
  // 加载商品列表
  router.get('/goodslists', (req, res) => {
-	 let {currentpage, pagesize} = req.query;
-	 let page = (currentpage - 1) * pagesize;
-	 let sql = `select * from goods order by id desc limit ${page} , ${pagesize}`;
+	 let {currentpage, pagesize, region, key } = req.query;
+	 let sql = `select * from goods where 1=1`;
+	 // 拼接条件
+	 if(region !== ''){
+		 sql += ` and theclass='${region}'`;
+	 }
+	 if(key !== ''){
+		 sql += ` and(code like '%${key}%' or name like '%${key}%')`
+	 }
+	 sql+= ` order by id desc`;
 	 connection.query(sql, (err, data) => {
-	     if(err) throw err;
-	     if(data.length != 0){
-	         res.send(data)
-	     }else{
-	         res.send(data)
-	     }
+		 if(err) throw err;
+		 let total = data.length;
+		 let page = (currentpage - 1) * pagesize;
+		 sql += ` limit ${page} , ${pagesize}`;
+		 connection.query(sql, (err, data) => {
+			 if(err) throw err;
+			 res.send({total, data})
+		 })
 	 })
  })
+	 
+	 
+	 
+	 
+	//  let page = (currentpage - 1) * pagesize;
+	//  let sql = `select * from goods order by id desc limit ${page} , ${pagesize}`;
+	//  connection.query(sql, (err, data) => {
+	//      if(err) throw err;
+	//      if(data.length != 0){
+	//          res.send(data)
+	//      }else{
+	//          res.send(data)
+	//      }
+	//  })
+ // })
  // 查询账号总条数
  router.get('/querytotal', (req, res) => {
  	let sql = `select * from goods`;

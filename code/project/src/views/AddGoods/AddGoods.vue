@@ -13,6 +13,7 @@
           <el-select v-model="addGoodsForm.theclass" placeholder="选择分类">
             <el-option label="日用品" value="日用品"></el-option>
             <el-option label="食品" value="食品"></el-option>
+            <el-option label="饮品" value="饮品"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商品条形码" prop="code">
