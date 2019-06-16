@@ -5,17 +5,11 @@
         <span>库存列表</span>
       </div>
       <el-form :inline="true" :model="search" class="demo-form-inline">
-        <el-form-item label="选择分类 :">
-          <el-select v-model="search.region" placeholder="选择分类">
-            <el-option label="优乐美" value="优乐美"></el-option>
-            <el-option label="茅台" value="茅台"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="关键字 :">
           <el-input v-model="search.key" placeholder="商品名称,条形码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click='querylists()'>查询</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="goods" stripe style="width: 100%; margin-bottom:20px;">
@@ -71,7 +65,6 @@ export default {
   data() {
     return {
       search: {
-        region: "",
         key: ""
       },
       goods: [],
@@ -103,12 +96,17 @@ export default {
       // 获取页码,页量
       let params = {
         pagesize: this.pagesize,
-        currentpage: this.currentpage
+        currentpage: this.currentpage,
+        key: this.search.key,
       };
+      // console.log(this.currentpage)
+      console.log(this.pagesize)
       this.$http
         .get("/stock/querystock", params)
         .then(response => {
-          this.goods = response.map(item => {
+          let {total, data} = response;
+          this.total = total;
+          this.goods = data.map(item => {
             return {
               code: item.code,
               name: item.name,
@@ -118,23 +116,11 @@ export default {
             };
           });
           // 如果没有数据,返回上一页并刷新列表
-          if (!response.length && this.currentpage !== 1) {
+          if (!data.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
-            this.querytotal();
             this.querystock();
           }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    // 查询总条数
-    querytotal() {
-      this.$http
-        .get("/stock/totallists")
-        .then(response => {
-          this.total = response.length;
         })
         .catch(err => {
           console.log(err);
@@ -158,7 +144,6 @@ export default {
                   type: "success"
                 });
                 // 更新列表
-                this.querytotal();
                 this.querystock();
               } else {
                 this.$message.error(msg);
@@ -211,7 +196,6 @@ export default {
               message: msg,
               type: "success"
             });
-            this.querytotal();
             this.querystock();
           } else if (code === 1) {
             this.$message.error(msg);
@@ -220,10 +204,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 模糊查询
+    querylists(){
+      this.querystock();
     }
   },
   created() {
-    this.querytotal();
     this.querystock();
   }
 };

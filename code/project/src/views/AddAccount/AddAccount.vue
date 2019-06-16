@@ -71,7 +71,20 @@ export default {
       } else if (value.length < 3 || value.length > 5) {
         callback(new Error("账号长度在 3 到 5 个字符!"));
       }
-      callback();
+      // 重复性验证
+      this.$http.post('/accounts/repeats', {value})
+      .then(response => {
+        let {code, msg} = response;
+        if(code === 0){
+          callback();
+        }else if(code === 1){
+          callback(new Error(msg))
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      // callback();
     };
     return {
       addAccountForm: {

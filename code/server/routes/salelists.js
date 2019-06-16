@@ -9,12 +9,11 @@ router.all('*', (req, res, next) => {
 	res.header("Access-Control-Allow-Headers", "authorization");
     next();
 })
-
 // 查询
 router.get('/quertlists', (req, res) => {
 	let {currentpage, pagesize} = req.query;
 	let page = (currentpage - 1) * pagesize;
-	let sql = `select * from salelists order by id desc limit ${page} , ${pagesize}`;
+	let sql = `select * from salelists order by saleoftime desc limit ${page} , ${pagesize}`;
 	connection.query(sql, (err, data) => {
 	    if(err) throw err;
 	    if(data.length != 0){

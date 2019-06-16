@@ -26,16 +26,22 @@ router.post('/addaccount', (req, res) => {
 })
 // 分页
 router.get('/viplists', (req, res) => {
-	let {currentpage, pagesize} = req.query;
-	let page = (currentpage - 1) * pagesize;
-	let sql = `select * from vipaccount order by id desc limit ${page} , ${pagesize}`;
+	let {currentpage, pagesize, key } = req.query;
+	let sql = `select * from vipaccount where 1=1`;
+	// 拼接条件
+	if(key !== ''){
+			 sql += ` and(realname like '%${key}%' or vipcard like '%${key}%')`
+	}
+	sql+= ` order by id desc`;
 	connection.query(sql, (err, data) => {
-	    if(err) throw err;
-	    if(data.length != 0){
-	        res.send(data)
-	    }else{
-	        res.send(data)
-	    }
+			 if(err) throw err;
+			 let total = data.length;
+			 let page = (currentpage - 1) * pagesize;
+			 sql += ` limit ${page} , ${pagesize}`;
+			 connection.query(sql, (err, data) => {
+				 if(err) throw err;
+				 res.send({total, data})
+			 })
 	})
 })
 // 总条数

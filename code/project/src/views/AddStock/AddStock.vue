@@ -27,7 +27,7 @@
           <span>&nbsp;元</span>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click='addstock'>入库</el-button>
+          <el-button type="primary" @click="addstock">入库</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -51,9 +51,7 @@ export default {
         name: [
           { required: true, message: "商品名称不能为空!", trigger: "blur" }
         ],
-        number: [
-          { required: true, message: "数量不能为空!", trigger: "blur" }
-          ],
+        number: [{ required: true, message: "数量不能为空!", trigger: "blur" }],
         originprice: [
           { required: true, message: "进价不能为空!", trigger: "blur" }
         ]
@@ -61,29 +59,37 @@ export default {
     };
   },
   methods: {
-    addstock(){
-      let params = {
-        code: this.addStock.code,
-        name: this.addStock.name,
-        number: this.addStock.number,
-        originprice: this.addStock.originprice,
-      }
-      this.$http.get('/stock/addstock', params)
-      .then(res => {
-          let { code, msg } = res;
-          if (code === 0) {
-            this.$message({
-              message: msg,
-              type: "success"
+    addstock() {
+      this.$refs.addStock.validate(valid => {
+        if (valid) {
+          let params = {
+            code: this.addStock.code,
+            name: this.addStock.name,
+            number: this.addStock.number,
+            originprice: this.addStock.originprice
+          };
+          this.$http
+            .get("/stock/addstock", params)
+            .then(res => {
+              let { code, msg } = res;
+              if (code === 0) {
+                this.$message({
+                  message: msg,
+                  type: "success"
+                });
+                this.$router.push("/home/stocklists");
+              } else if (code === 1) {
+                this.$message.error(msg);
+              }
+            })
+            .catch(err => {
+              console.log(err);
             });
-            this.$router.push('/home/stocklists');
-          } else if (code === 1) {
-            this.$message.error(msg);
-          }
-        })
-      .catch(err => {
-        console.log(err);
-      })
+        } else {
+          this.$message.error("添加失败!");
+          return false;
+        }
+      });
     }
   }
 };

@@ -6,10 +6,10 @@
       </div>
       <el-form :inline="true" :model="search" class="demo-form-inline">
         <el-form-item label="搜索 :">
-          <el-input v-model="search.key" placeholder="会员卡,会员名,电话,手机"></el-input>
+          <el-input v-model="search.key" placeholder="会员卡,会员名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click='filterQuery'>查询</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="vipinfo" stripe style="width: 100%; margin-bottom:20px;">
@@ -75,7 +75,6 @@ export default {
   data() {
     return {
       search: {
-        region: "",
         key: ""
       },
       vipinfo: [],
@@ -108,12 +107,15 @@ export default {
       // 获取页码,页量
       let params = {
         pagesize: this.pagesize,
-        currentpage: this.currentpage
+        currentpage: this.currentpage,
+        key: this.search.key,
       };
       this.$http
         .get("/vipaccount/viplists", params)
         .then(response => {
-          this.vipinfo = response.map(item => {
+          let {total, data} = response;
+          this.total = total;
+          this.vipinfo = data.map(item => {
             return {
               vipcard: item.vipcard,
               realname: item.realname,
@@ -124,23 +126,11 @@ export default {
             };
           });
           // 如果没有数据,返回上一页并刷新列表
-          if (!response.length && this.currentpage !== 1) {
+          if (!data.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
-            this.querytotal();
             this.queryviplists();
           }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    // 数据总条数
-    querytotal() {
-      this.$http
-        .get("/vipaccount/totallists")
-        .then(response => {
-          this.total = response.length;
         })
         .catch(err => {
           console.log(err);
@@ -164,7 +154,6 @@ export default {
                   type: "success"
                 });
                 // 更新列表
-                this.querytotal();
                 this.queryviplists();
               } else {
                 this.$message.error(msg);
@@ -219,7 +208,6 @@ export default {
               message: msg,
               type: "success"
             });
-            this.querytotal();
             this.queryviplists();
           } else if (code === 1) {
             this.$message.error(msg);
@@ -228,10 +216,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 模糊查询
+    filterQuery(){
+      this.queryviplists();
     }
   },
   created() {
-    this.querytotal();
     this.queryviplists();
   }
 };

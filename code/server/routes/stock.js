@@ -25,18 +25,24 @@ router.get('/addstock', (req, res) => {
 })
 // 查询
 router.get('/querystock', (req, res) => {
-	let {currentpage, pagesize} = req.query;
-	let page = (currentpage - 1) * pagesize;
-	let sql = `select * from stock order by id desc limit ${page} , ${pagesize}`;
-	connection.query(sql, (err, data) => {
-	    if(err) throw err;
-	    if(data.length != 0){
-	        res.send(data)
-	    }else{
-	        res.send(data)
-	    }
-	})
-})
+	 let {currentpage, pagesize, key } = req.query;
+	 let sql = `select * from stock where 1=1`;
+	 // 拼接条件
+	 if(key !== ''){
+		 sql += ` and(code like '%${key}%' or name like '%${key}%')`
+	 }
+	 sql+= ` order by id desc`;
+	 connection.query(sql, (err, data) => {
+		 if(err) throw err;
+		 let total = data.length;
+		 let page = (currentpage - 1) * pagesize;
+		 sql += ` limit ${page} , ${pagesize}`;
+		 connection.query(sql, (err, data) => {
+			 if(err) throw err;
+			 res.send({total, data})
+		 })
+	 })
+ })
 // 总条数
 router.get('/totallists', (req, res) => {
 	let sql = `select * from stock`;

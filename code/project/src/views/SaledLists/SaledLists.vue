@@ -6,30 +6,22 @@
       </div>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="时间">
-          <el-col :span="5">
+          <el-col :span="8">
             <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date1"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="1" style="text-align:center;">-</el-col>
-          <el-col :span="5">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date2"
-              style="width: 100%;"
+              v-model="form.timeTo"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
             ></el-date-picker>
           </el-col>
           <el-col class="line" :span="6" style="text-align:center;">
             <el-form-item label="关键字">
-              <el-input v-model="form.name" placeholder="商品名称,订单号,会员卡"></el-input>
+              <el-input v-model="form.key" placeholder="商品名称,订单号,会员卡"></el-input>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="1" style="text-align:center;">
-            <el-button type="primary">查询</el-button>
+            <el-button type="primary" @click='filterQuery'>查询</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -40,7 +32,11 @@
         <el-table-column prop="realprice" label="实际售价" width="170"></el-table-column>
         <el-table-column prop="vip" label="优惠(促销/会员)" width="170"></el-table-column>
         <el-table-column prop="returnmoney" label="退款" width="170"></el-table-column>
-        <el-table-column prop="saleoftime" label="销售时间"></el-table-column>
+        <el-table-column prop="saleoftime" label="销售时间">
+          <template slot-scope="scope">
+            {{ scope.row.saleoftime }}
+          </template>
+        </el-table-column>
       </el-table>
       <div>
         <el-pagination
@@ -61,7 +57,10 @@
 export default {
   data() {
     return {
-      form: {},
+      form: {
+        timeTo: '',
+        key: '',
+      },
       salelists: [],
       pagesize: 5,
       currentpage: 1,
@@ -69,24 +68,28 @@ export default {
     };
   },
   methods: {
-    handleSizeChange(val){
+    handleSizeChange(val) {
       this.pagesize = val;
       this.querylists();
     },
-    handleCurrentChange(val){
+    handleCurrentChange(val) {
       this.currentpage = val;
       this.querylists();
     },
     // 数据加载
-    querylists(){
+    querylists() {
       // 获取页码,页量
       let params = {
         pagesize: this.pagesize,
         currentpage: this.currentpage
       };
-      this.$http.get('/salelists/quertlists', params)
-      .then(response => {
+      this.$http
+        .get("/salelists/quertlists", params)
+        .then(response => {
           this.salelists = response.map(item => {
+            let ctime = this.$moment(item.saleoftime).format(
+              "YYYY-MM-DD"
+            );
             return {
               ordernumber: item.ordernumber,
               name: item.name,
@@ -94,8 +97,8 @@ export default {
               realprice: item.realprice,
               vip: item.vip,
               returnmoney: item.returnmoney,
-              saleoftime: item.saleoftime,
-              id: item.id,
+              saleoftime: ctime,
+              id: item.id
             };
           });
           // 如果没有数据,返回上一页并刷新列表
@@ -121,11 +124,21 @@ export default {
           console.log(err);
         });
     },
+    // 模糊查询
+    filterQuery(){
+      // let t1 = this.form.timeTo[0];
+      // let t2 = this.form.timeTo[1];
+      // let t1year = t1.getFullYear();
+      // let t1month = t1.getMonth() + 1;
+      // let t1day = t1.getDate();
+      // let t1Str = `${t1year}-${t1month}-${t1day}`
+      // console.log(t1Str)
+    }
   },
-  created(){
+  created() {
     this.querytotal();
     this.querylists();
-  }
+  },
 };
 </script>
 

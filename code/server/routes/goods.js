@@ -58,21 +58,7 @@ router.all('*', (req, res, next) => {
 		 })
 	 })
  })
-	 
-	 
-	 
-	 
-	//  let page = (currentpage - 1) * pagesize;
-	//  let sql = `select * from goods order by id desc limit ${page} , ${pagesize}`;
-	//  connection.query(sql, (err, data) => {
-	//      if(err) throw err;
-	//      if(data.length != 0){
-	//          res.send(data)
-	//      }else{
-	//          res.send(data)
-	//      }
-	//  })
- // })
+
  // 查询账号总条数
  router.get('/querytotal', (req, res) => {
  	let sql = `select * from goods`;

@@ -16,7 +16,7 @@
           <el-input v-model="search.key" placeholder="商品名称,条形码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click='filterCheck()'>查询</el-button>
+          <el-button type="primary" @click='filterCheck'>查询</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="goods" stripe style="width: 100%; margin-bottom:20px;">
@@ -132,11 +132,11 @@ export default {
             return item;
           });
           // 如果没有数据,返回上一页并刷新列表
-          if (!response.length && this.currentpage !== 1) {
+          if (!data.length && this.currentpage !== 1) {
             // 回到上一页
             this.currentpage -= 1;
-            this.querytotal();
             this.queryGoodsLists();
+
           }
         })
         .catch(err => {

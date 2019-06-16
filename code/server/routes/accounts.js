@@ -142,4 +142,17 @@ router.post('/modify', (req, res) => {
 		}
 	})
 })
+// 用户名重新验证
+router.post('/repeats', (req, res) => {
+	let {value} = req.body;
+	let sql = `select * from account where account='${value}'`;
+	connection.query(sql, (err, data) => {
+		if(err) throw err;
+		if(data.length > 0){
+			res.send({code: 1, msg: '账号名已存在!'})
+		}else{
+			res.send({code: 0, msg: '账号名可以使用!'})
+		}
+	})
+})
 module.exports = router;
