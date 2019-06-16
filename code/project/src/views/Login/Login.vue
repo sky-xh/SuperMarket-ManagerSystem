@@ -104,8 +104,8 @@ export default {
           .then(res => {
             let{code, msg, token} = res;
             // token放入本次存储
-            local.set('this_is_not_token', token)
             if(code === 0){
+              local.set('this_is_not_token', token)
               this.$message({
                 type: 'success',
                 message: msg,

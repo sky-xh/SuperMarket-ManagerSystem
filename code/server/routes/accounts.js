@@ -64,7 +64,6 @@ router.get('/querytotal', (req, res) => {
 		res.send(data);
 	})
 })
-
 // 删除某项
 router.get('/delaccount', (req, res) => {
     let { id } = req.query
@@ -109,10 +108,37 @@ router.post('/updateaccount',(req, res) => {
 	let {name, region, id} = req.body;
 	let sql = `update account set account='${ name }', region='${ region }' where id=${ id }`;
 	connection.query(sql, (err, data) => {
+		if(err) throw err;
 		if(data.affectedRows > 0){
 			res.send({code: 0, msg: '修改账号成功!'})
 		}else{
 			res.send({code: 1, msg: '修改账号失败!'})
+		}
+	})
+})
+// 原密码验证
+router.post('/oldpass', (req, res) => {
+	let { value } = req.body;
+	let { password } = req.user;
+	if(value === password){
+		res.send({code:0, msg: '原密码验证成功!'})
+	}else{
+		res.send({code:1, msg: '原密码验证失败!'})
+		}
+	})
+// 修改密码
+router.post('/modify', (req, res) => {
+	// res.send('1')
+	let {password} = req.body;
+	let { id } = req.user;
+	let sql = `update account set password='${ password }' where id=${ id }`;
+	// console.log(sql)
+	connection.query(sql, (err, data) => {
+		if(err) throw err;
+		if(data.affectedRows > 0){
+			res.send({code: 0, msg: '修改密码成功!'})
+		}else{
+			res.send({code: 1, msg: '修改密码失败!'})
 		}
 	})
 })
