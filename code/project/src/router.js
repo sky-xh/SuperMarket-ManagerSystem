@@ -10,6 +10,7 @@ export default new Router({
     { path: '/login', component: () => import('./views/Login/Login.vue')},
     { path: '/home',redirect: '/home/systeminfo', component: () => import('./views/Home/Home.vue'), children: [
       // 二级路由
+      {path: '/home/personal', component: () => import('./views/Personal/Personal.vue')},
       {path: '/home/accountmanage', component: () => import('./views/AccountManage/AccountManage.vue')},
       {path: '/home/addaccount', component: () => import('./views/AddAccount/AddAccount.vue')},
       {path: '/home/addgoods', component: () => import('./views/AddGoods/AddGoods.vue')},

@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <!-- 顶部 -->
-        <HomeTopBar></HomeTopBar>
+        <HomeTopBar ref='top'></HomeTopBar>
       </el-header>
       <el-container>
         <el-aside width="200px">
@@ -13,7 +13,7 @@
         <el-container>
           <el-main>
             <!-- 路由出口 -->
-            <router-view></router-view>
+            <router-view @A='B'></router-view>
           </el-main>
           <el-footer>
             <!-- 底部 -->
@@ -34,6 +34,11 @@ export default {
     HomeTopBar,
     HomeSideBar,
     HomeFooterBar
+  },
+  methods:{
+    B(){
+      this.$refs.top.getUserInfo();
+    }
   }
 };
 </script>

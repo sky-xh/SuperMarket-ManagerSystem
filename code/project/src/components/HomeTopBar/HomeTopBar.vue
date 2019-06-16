@@ -10,7 +10,7 @@
       </el-col>
       <el-col :span="2">
         <div class="grid-content bg-purple-light">
-          <img src alt class="avatar">
+          <img :src='imgUrl' class="avatar">
         </div>
       </el-col>
       <el-col :span="2">
@@ -37,12 +37,13 @@ export default {
   data() {
       return{
           account: '',
+          imgUrl: '',
       }
   },
   methods: {
     handleCommand(command) {
       if (command === "personal") {
-        console.log("进入个人中心");
+        this.$router.push('/home/personal')
       } else if (command === "logout") {
         local.remove("this_is_not_token");
         this.$message({
@@ -54,11 +55,13 @@ export default {
         }, 600);
       }
     },
-    queryUsername() {
+    getUserInfo() {
       this.$http
-        .get("http://127.0.0.1:3000/login/query")
+        .get("/accounts/accountinfo")
         .then(res => {
-          this.account = res;
+          let {account, img_url} = res[0];
+          this.account = account;
+          this.imgUrl = `http://127.0.0.1:3000${img_url}`;
         })
         .catch(err => {
           console.log(err);
@@ -66,7 +69,7 @@ export default {
     }
   },
   created() {
-    this.queryUsername();
+    this.getUserInfo();
   }
 };
 </script>

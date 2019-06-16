@@ -7,8 +7,7 @@ const jwt = require('jsonwebtoken');
 router.all('*', (req, res, next) => {
 	// 设置响应头解决跨域
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "content-type");
-	res.header("Access-Control-Allow-Headers", "authorization");
+	res.header("Access-Control-Allow-Headers", "authorization,content-type");
     next();
 })
 

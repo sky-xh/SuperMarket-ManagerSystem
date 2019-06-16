@@ -97,7 +97,15 @@ export default {
                         {path: "/home/addvipaccount", title: '添加账号'},
                         {path: "/home/vipaccountmanage", title: '账号管理'},
                     ]
-                }
+                },
+                // 个人中心
+                {
+                    icon: 'el-icon-setting',
+                    title: '个人中心',
+                    children: [
+                        {path: "/home/personal", title: '个人资料'},
+                    ]
+                },
             ]
         }
     }
