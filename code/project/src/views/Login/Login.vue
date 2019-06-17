@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-box">
       <h2>
-        <span class="el-icon-s-custom"></span>&nbsp;超市管理系统
+        <span class="el-icon-s-custom"></span>&nbsp;SystemManage of JunJun
       </h2>
       <el-form
         :model="loginForm"

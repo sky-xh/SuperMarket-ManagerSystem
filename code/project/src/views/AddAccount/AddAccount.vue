@@ -82,9 +82,8 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
+        this.$message.error(err)
       })
-      // callback();
     };
     return {
       addAccountForm: {

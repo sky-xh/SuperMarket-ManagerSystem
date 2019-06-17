@@ -2,15 +2,13 @@
  *   登陆页面样式
  */
  .login{
-    background-image: url("../../assets/img/15812.jpg");
-    background-size: cover;
+    background-image: url("../../assets/img/banner.jpg");
     height: 100%;
     .login-box{
         width: 500px;
-        height: 300px;
+        height: 350px;
         border: 1px solid #fff;
-        // background: rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
+        border-radius: 15px;
         position: fixed;
         top: 0;
         bottom: 0;
@@ -19,22 +17,37 @@
         margin: auto;
         padding-right: 60px;
         padding-bottom: 40px;
+        background: #e1e1e1;
         h2{
             color: #fff;
             padding: 20px 60px 20px 67px;
+            background: #e60026;
+            width: 433px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            margin-bottom: 22px;
+            border-bottom: 2px solid #ad4337;
+
         }
         .el-form{
             .el-form-item{
+                height: 55px;
                 .el-form-item__label{
-                    color: #fff;
+                    color: #e60026;
+                    font-weight: bold;
+                    
                 }
                 .el-input__inner{
-                    background: rgba(0, 0, 0, 0);
-                    color: #fff;
+                    background: #cacaca;
+                    color: #e60026;
+                    border-radius: 20px;
+
                 }
                 .el-button{
-                    background: rgba(0, 0, 0, 0);
                     color: #fff;
+                    background: #e60026;
+                    border-radius: 20px;
+                    font-weight: bold;
                 }
             }
         }

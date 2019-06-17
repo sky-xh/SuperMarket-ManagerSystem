@@ -5,8 +5,10 @@
         <span>个人中心</span>
       </div>
       <div>
-        <!-- 头像 -->
-        <div>
+        <el-row>
+        <el-col :span="5"><div class="grid-content bg-purple">
+          
+          <div>
           <el-upload
             class="avatar-uploader"
             action="suiyi"
@@ -18,12 +20,18 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </div>
-        <div style="margin-top:20px;">
-          <p>ID:&emsp;{{ accountinfo.id }}</p>
-          <p>用户名:&emsp;{{ accountinfo.account }}</p>
-          <p>用户组:&emsp;{{ accountinfo.region }}</p>
-          <p>创建时间:&emsp;{{ accountinfo.createtime | filtertime }}</p>
+        </div></el-col>
+        <el-col :span="12"><div class="grid-content bg-purple-light">
+            <div style="margin-top:20px;">
+          <p>&emsp;&emsp;&emsp;ID:&emsp;&emsp;{{ accountinfo.id }}</p>
+          <p>&emsp;用户名:&emsp;&emsp;{{ accountinfo.account }}</p>
+          <p>&emsp;用户组:&emsp;&emsp;{{ accountinfo.region }}</p>
+          <p>创建时间:&emsp;&emsp;{{ accountinfo.createtime | filtertime }}</p>
         </div>
+        </div></el-col>
+        </el-row>
+        
+        
       </div>
     </el-card>
   </div>
@@ -114,35 +122,5 @@ export default {
 </script>
 
 <style lang='less'>
-.personal {
-  .el-card {
-    .el-card__header {
-      background: #f1f1f1;
-      font-weight: bold;
-    }
-    .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409eff;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width: 178px;
-      height: 178px;
-      display: block;
-    }
-  }
-}
+  @import url('./personal.less');
 </style>
