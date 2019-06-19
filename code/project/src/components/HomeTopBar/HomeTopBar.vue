@@ -33,6 +33,7 @@
 
 <script>
 import local from "../../utils/localStorage";
+import { loadAccountInfo } from '@/api/account';
 export default {
   data() {
       return{
@@ -56,8 +57,7 @@ export default {
       }
     },
     getUserInfo() {
-      this.$http
-        .get("/accounts/accountinfo")
+      loadAccountInfo()
         .then(res => {
           let {account, img_url} = res[0];
           this.account = account;

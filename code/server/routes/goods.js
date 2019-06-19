@@ -57,15 +57,6 @@ router.all('*', (req, res, next) => {
 		 })
 	 })
  })
-
- // 查询账号总条数
- router.get('/querytotal', (req, res) => {
- 	let sql = `select * from goods`;
- 	connection.query(sql, (err, data) => {
- 		if(err) throw err;
- 		res.send(data);
- 	})
- })
  // 删除某项
  router.get('/delgoods', (req, res) => {
      let { id } = req.query

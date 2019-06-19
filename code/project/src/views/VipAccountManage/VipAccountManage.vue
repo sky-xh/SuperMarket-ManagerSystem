@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { vipLists, del, returnData, updateData } from '@/api/vipAccount'
 export default {
   data() {
     return {
@@ -110,8 +111,7 @@ export default {
         currentpage: this.currentpage,
         key: this.search.key,
       };
-      this.$http
-        .get("/vipaccount/viplists", params)
+      vipLists(params)
         .then(response => {
           let {total, data} = response;
           this.total = total;
@@ -144,8 +144,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http
-            .get("/vipaccount/del", { id })
+          del({id})
             .then(res => {
               let { code, msg } = res;
               if (code === 0) {
@@ -174,8 +173,7 @@ export default {
     returndata(id) {
       this.dialogFormVisible = true;
       this.vipid = id;
-      this.$http
-        .get("/vipaccount/returndata", { id })
+      returnData({id})
         .then(res => {
           this.form.vipcard = res[0].vipcard;
           this.form.realname = res[0].realname;
@@ -199,8 +197,7 @@ export default {
         address: this.form.address,
         phonecall: this.form.phonecall
       };
-      this.$http
-        .get("/vipaccount/updatedata", params)
+      updateData(params)
         .then(res => {
           let { code, msg } = res;
           if (code === 0) {

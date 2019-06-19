@@ -40,6 +40,7 @@
 <script>
 import moment from "moment";
 import axios from 'axios';
+import { loadAccountInfo } from '@/api/account'
 export default {
   data() {
     return {
@@ -54,8 +55,7 @@ export default {
   },
   methods: {
     accountInfo() {
-      this.$http
-        .get("/accounts/accountinfo")
+      loadAccountInfo()
         .then(res => {
           let { id, account, region, createtime } = res[0];
           this.accountinfo.id = id;
@@ -67,7 +67,6 @@ export default {
           console.log(err);
         });
     },
-
     // 头像上传之前回调
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";

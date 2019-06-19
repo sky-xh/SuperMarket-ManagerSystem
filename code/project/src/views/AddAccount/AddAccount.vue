@@ -41,6 +41,7 @@
 <script>
 import { passwordValidator } from "@/utils/validator";
 import { constants } from "crypto";
+import { addAccount, isRepeat } from '@/api/account';
 export default {
   data() {
     // 自定义验证
@@ -72,7 +73,7 @@ export default {
         callback(new Error("账号长度在 3 到 5 个字符!"));
       }
       // 重复性验证
-      this.$http.post('/accounts/repeats', {value})
+      isRepeat({ value })
       .then(response => {
         let {code, msg} = response;
         if(code === 0){
@@ -114,8 +115,7 @@ export default {
             password: this.addAccountForm.password,
             region: this.addAccountForm.region
           };
-          this.$http
-            .post("/accounts/addaccount", params)
+          addAccount( params )
             .then(res => {
               let { code, msg } = res;
               if (code === 0) {

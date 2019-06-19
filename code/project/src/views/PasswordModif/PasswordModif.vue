@@ -36,6 +36,7 @@
 import { passwordValidator } from "@/utils/validator";
 import local from '../../utils/localStorage';
 import { setTimeout } from 'timers';
+import { checkOldPass, passwordModify } from '@/api/account';
 export default {
   data() {
     // 自定义验证
@@ -64,7 +65,7 @@ export default {
     };
     // 原密码验证
     const validateOldpass = (rule, value, callback) => {
-        this.$http.post('/accounts/oldpass', {value})
+        checkOldPass({ value })
             .then(res => {
                 let {code, msg} = res;
                 if(code === 0){
@@ -107,7 +108,7 @@ export default {
           let params = {
             password: this.passwordModif.newpass
           };
-          this.$http.post('/accounts/modify', params)
+          passwordModify( params )
           .then(res => {
             let {code, msg} = res ;
             if(code === 0){
@@ -132,8 +133,6 @@ export default {
         }
       });
     },
-    // 原密码验证
-    
   }
 };
 </script>

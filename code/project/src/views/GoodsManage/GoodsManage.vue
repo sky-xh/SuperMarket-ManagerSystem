@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { goodsLists, delGoods, returnData, updateGoods } from '@/api/goods'
 export default {
   data() {
     return {
@@ -114,8 +115,7 @@ export default {
         region: this.search.region,
         key: this.search.key,
       };
-      this.$http
-        .get("/goods/goodslists", params)
+      goodsLists(params)
         .then(response => {
           let { total, data} = response;
           this.total = total;
@@ -161,8 +161,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http
-            .get("/goods/delgoods", { id })
+          delGoods({id})
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -191,8 +190,7 @@ export default {
     returndata(id) {
       this.updateid = id;
       this.dialogFormVisible = true;
-      this.$http
-        .get("/goods/returndata", { id })
+      returnData({id})
         .then(response => {
           this.form.code = response[0].code;
           this.form.name = response[0].name;
@@ -210,8 +208,7 @@ export default {
       this.dialogFormVisible = false;
       let id = this.updateid;
       let { code, name, theclass, price, saleprice, number } = this.form;
-      this.$http
-        .post("/goods/updategoods", {
+        updateGoods({
           code,
           name,
           theclass,

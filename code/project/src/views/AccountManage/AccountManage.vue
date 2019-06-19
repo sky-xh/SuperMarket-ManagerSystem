@@ -68,6 +68,14 @@
 
 <script>
 import { constants } from "crypto";
+import { accountLists,
+         delAccount,
+         delChooseItem,
+         returnData,
+         updateAccount,
+         queryTotal
+     } from '@/api/account';
+
 export default {
   data() {
     return {
@@ -89,8 +97,7 @@ export default {
         currentpage : this.currentpage,
         pagesize : this.pagesize,
       }
-      this.$http
-        .get("/accounts/accountlists", params)
+      accountLists(params)
         .then(response => {
           this.accountManage = response.map(list => {
             // 处理时间
@@ -130,8 +137,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http
-            .get("/accounts/delaccount", { id })
+          delAccount({ id })
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -178,8 +184,7 @@ export default {
       })
         .then(() => {
           let ids = this.ids;
-          this.$http
-            .get("/accounts/delchooseitem", { ids })
+          delChooseItem({ ids })
             .then(response => {
               let { code, msg } = response;
               if (code === 0) {
@@ -212,8 +217,7 @@ export default {
       this.updateid = id;
       // 弹出对话框
       this.dialogFormVisible = true,
-        this.$http
-          .get("/accounts/returndata", { id })
+        returnData({ id })
           .then(response => {
             this.form.name = response[0].account;
             this.form.region = response[0].region;
@@ -227,12 +231,12 @@ export default {
       this.dialogFormVisible = false;
       let id = this.updateid;
       let { name, region } = this.form;
-      this.$http
-        .post("/accounts/updateaccount", {
+      let params = {
           name,
           region,
           id
-        })
+        };
+        updateAccount(params)
         .then(response => {
           let { code, msg } = response;
           if (code === 0) {
@@ -262,7 +266,7 @@ export default {
     },
     // 查询总条数
     querytotal(){
-      this.$http.get("/accounts/querytotal")
+      queryTotal()
       .then(response => {
         this.total = response.length;
       })

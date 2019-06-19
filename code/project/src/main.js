@@ -5,7 +5,7 @@ import './assets/css/reset.css'                   // 引入重置样式表,公�
 import './assets/css/common.css'
 import ElementUI from 'element-ui'                // 引入element-ui
 import 'element-ui/lib/theme-chalk/index.css'
-import request from '@/utils/request'             // 引入封装好的axios
+// import request from '@/utils/request'             // 引入封装好的axios
 import echarts from 'echarts'                     // 引入Echarts
 import moment from 'moment'                       // 引入moment
 import local from './utils/localStorage'
@@ -13,7 +13,7 @@ import local from './utils/localStorage'
 
 
 // 挂载原型
-Vue.prototype.$http = request;
+// Vue.prototype.$http = request;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$moment = moment;
 

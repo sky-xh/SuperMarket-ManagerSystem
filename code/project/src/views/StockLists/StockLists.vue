@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { queryStock, del, returnData, updateData } from '@/api/stock'
 export default {
   data() {
     return {
@@ -99,10 +100,7 @@ export default {
         currentpage: this.currentpage,
         key: this.search.key,
       };
-      // console.log(this.currentpage)
-      console.log(this.pagesize)
-      this.$http
-        .get("/stock/querystock", params)
+      queryStock(params)
         .then(response => {
           let {total, data} = response;
           this.total = total;
@@ -134,8 +132,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$http
-            .get("/stock/del", { id })
+          del({id})
             .then(res => {
               let { code, msg } = res;
               if (code === 0) {
@@ -164,8 +161,7 @@ export default {
     returndata(id) {
       this.dialogFormVisible = true;
       this.rowid = id;
-      this.$http
-        .get("/stock/returndata", { id })
+      returnData({id})
         .then(res => {
           this.form.code = res[0].code;
           this.form.name = res[0].name;
@@ -187,8 +183,7 @@ export default {
         originprice: this.form.originprice,
         number: this.form.number
       };
-      this.$http
-        .get("/stock/updatedata", params)
+      updateData(params)
         .then(res => {
           let { code, msg } = res;
           if (code === 0) {

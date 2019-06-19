@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { addAccount } from '@/api/vipAccount'
 export default {
   data() {
     return {
@@ -135,8 +136,7 @@ export default {
         address: this.vipaccountform.address,
         value: values
       };
-      this.$http
-        .post("/vipaccount/addaccount", params)
+      addAccount(params)
         .then(response => {
           let { code, msg } = response;
           if (code === 0) {

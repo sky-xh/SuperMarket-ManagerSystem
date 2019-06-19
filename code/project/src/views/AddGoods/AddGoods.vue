@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { toAddGoods } from '@/api/goods';
 export default {
   data() {
     return {
@@ -121,8 +122,7 @@ export default {
         promote: this.addGoodsForm.promote,
         introduce: this.addGoodsForm.introduce
       };
-      this.$http
-        .post("/goods/addgoods", params)
+      toAddGoods(params)
         .then(response => {
           let { code, msg } = response;
           if (code === 0) {
@@ -130,6 +130,7 @@ export default {
               message: msg,
               type: "success"
             });
+          this.$router.push('/home/goodsmanage');
           } else if (code === 1) {
             this.$message.error(msg);
           }

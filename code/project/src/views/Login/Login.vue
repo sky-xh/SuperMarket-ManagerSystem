@@ -34,7 +34,8 @@
 // 引入正则
 import { passwordValidator } from "../../utils/validator";
 import { constants } from "crypto";
-import local from '../../utils/localStorage'
+import local from '../../utils/localStorage';
+import { checkLogin } from '@/api/login';
 
 export default {
   data() {
@@ -100,7 +101,7 @@ export default {
             account: this.loginForm.account,
             password: this.loginForm.password
           };
-          this.$http.post('/login/check', params)
+          checkLogin(params)
           .then(res => {
             let{code, msg, token} = res;
             // token放入本次存储

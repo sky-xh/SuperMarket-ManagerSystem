@@ -21,7 +21,7 @@
             </el-form-item>
           </el-col>
           <el-col class="line" :span="1" style="text-align:center;">
-            <el-button type="primary" @click="filterQuery">查询</el-button>
+            <el-button type="primary">查询</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { quertLists, totalLists } from '@/api/saleLists'
 export default {
   data() {
     return {
@@ -81,8 +82,7 @@ export default {
         pagesize: this.pagesize,
         currentpage: this.currentpage
       };
-      this.$http
-        .get("/salelists/quertlists", params)
+      quertLists(params)
         .then(response => {
           this.salelists = response.map(item => {
             let ctime = this.$moment(item.saleoftime).format("YYYY-MM-DD");
@@ -111,24 +111,13 @@ export default {
     },
     // 查询总条数
     querytotal() {
-      this.$http
-        .get("/salelists/totallists")
+      totalLists()
         .then(response => {
           this.total = response.length;
         })
         .catch(err => {
           console.log(err);
         });
-    },
-    // 模糊查询
-    filterQuery() {
-      // let t1 = this.form.timeTo[0];
-      // let t2 = this.form.timeTo[1];
-      // let t1year = t1.getFullYear();
-      // let t1month = t1.getMonth() + 1;
-      // let t1day = t1.getDate();
-      // let t1Str = `${t1year}-${t1month}-${t1day}`
-      // console.log(t1Str)
     },
   },
   created() {

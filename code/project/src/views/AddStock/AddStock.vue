@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { addStock } from "@/api/stock"
 export default {
   data() {
     return {
@@ -68,8 +69,7 @@ export default {
             number: this.addStock.number,
             originprice: this.addStock.originprice
           };
-          this.$http
-            .get("/stock/addstock", params)
+          addStock(params)
             .then(res => {
               let { code, msg } = res;
               if (code === 0) {
