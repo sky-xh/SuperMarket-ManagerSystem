@@ -61,7 +61,8 @@ export default {
         .then(res => {
           let {account, img_url} = res[0];
           this.account = account;
-          this.imgUrl = `http://127.0.0.1:3000${img_url}`;
+          // this.imgUrl = `http://127.0.0.1:3000${img_url}`;
+          this.imgUrl = `http://172.16.12.174:3000${img_url}`;
         })
         .catch(err => {
           console.log(err);

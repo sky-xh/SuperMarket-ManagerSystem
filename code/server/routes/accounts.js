@@ -174,7 +174,7 @@ const storage = multer.diskStorage({
 	destination: 'public/upload',
 	// 图片重命名
     filename(req, file, cb) {
-        var fileFormat =(file.originalname).split("."); // haha.jpg => ['haha', 'jpg']
+        var fileFormat =(file.originalname).split("."); 
         // 获取时间戳
         var filename = new Date().getTime();  
         // 124354654 + "." + jpg
@@ -202,5 +202,9 @@ router.post('/uploadavatar', upload.single('file'), (req, res) => {
 			res.send({code: 1, msg: '头像修改失败!'})
 		}
 	})
+})
+// 菜单权限
+router.get('/authority', (req, res) => {
+	res.send(req.user.region);
 })
 module.exports = router;

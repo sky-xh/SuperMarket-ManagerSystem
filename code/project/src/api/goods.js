@@ -19,3 +19,11 @@ export function returnData( params ){
 export function updateGoods( params ){
     return req.post('/goods/updategoods', params);
 }
+// 销售统计
+export function saleTotal( params ){
+    return req.get('/goods/saletotal', params);
+}
+// 进货统计
+export function goodsTotal( params ){
+    return req.get('/goods/goodstotal', params);
+}

@@ -6,25 +6,17 @@
       </div>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="时间">
-          <el-col :span="5">
+          <el-col :span="8">
             <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date1"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="1" style="text-align:center;">-</el-col>
-          <el-col :span="5">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date2"
-              style="width: 100%;"
+              v-model="form.timeTo"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
             ></el-date-picker>
           </el-col>
           <el-col class="line" :span="1" style="text-align:center;">
-            <el-button type="primary">提交</el-button>
+            <el-button type="primary" @click='submit'>提交</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -35,11 +27,29 @@
 </template>
 
 <script>
+import { goodsTotal } from '@/api/goods';
+import moment from 'moment';
 export default {
   name: "hello",
   data() {
     return {
-      form: {}
+      form: {
+        timeTo: '',
+      },
+      xdata: [
+            "2019/6/13",
+            "2019/6/14",
+            "2019/6/15",
+            "2019/6/16",
+            "2019/6/17",
+            "2019/6/18",
+            "2019/6/19",
+            "2019/6/20",
+            "2019/6/21",
+            "2019/6/22"
+          ],
+      values: [220, 332, 101, 534, 390, 530, 410, 632, 401, 534],
+
     };
   },
   mounted() {
@@ -51,57 +61,62 @@ export default {
       let myChart = this.$echarts.init(document.getElementById("myChart"));
       // 绘制图表
       myChart.setOption({
-    title: {
-        text: '',
-    },
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['进货统计']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['2019/6/13',
-               '2019/6/14',
-               '2019/6/15',
-               '2019/6/16',
-               '2019/6/17',
-               '2019/6/18',
-               '2019/6/19',
-               '2019/6/20',
-               '2019/6/21',
-               '2019/6/22',
-        ]
-    },
-    yAxis: {
-        type: 'value',
-        axisLabel: {
-            formatter: `{value} 元`
-        }
-    },
-    series: [
-        {
-            name:'进货统计',
-            type:'line',
-            stack: '总量',
-            data:[220, 332, 101, 534, 390, 530, 410, 632, 401, 534]
+        title: {
+          text: ""
         },
-    ]
-});
-    }
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["进货统计"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: this.xdata,
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            formatter: `{value} 元`
+          }
+        },
+        series: [
+          {
+            name: "进货统计",
+            type: "line",
+            stack: "总量",
+            data: this.values,
+          }
+        ]
+      });
+    },
+    submit(){
+      let params = {
+        params: this.form.timeTo
+      };
+      goodsTotal( params )
+      .then(res => {
+        this.values = res.map(item => item.data);
+        this.xdata = res.map(item => moment(item.date).format('YYYY-MM-DD'));
+        this.drawLine();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+    },
   }
 };
 </script>

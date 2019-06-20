@@ -45,3 +45,7 @@ export function passwordModify( params ){
 export function loadAccountInfo( params ){
     return req.get('/accounts/accountinfo', params);
 }
+// 菜单权限
+export function checkAuthority(){
+    return req.get('/accounts/authority');
+}

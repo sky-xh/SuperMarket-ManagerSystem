@@ -98,7 +98,9 @@ export default {
                     message: msg,
                 })
                 // 回填头像
-                this.imageUrl = `http://127.0.0.1:3000${path}`
+                // this.imageUrl = `http://127.0.0.1:3000${path}`
+                this.imageUrl = `http://172.16.12.174:3000${path}`
+
                 this.$emit('A');
             }else if(code === 1){
                 this.$message.error(msg);

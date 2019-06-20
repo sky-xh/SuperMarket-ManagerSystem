@@ -101,4 +101,32 @@ router.all('*', (req, res, next) => {
  		}
  	})
  })
+ // 销售统计
+ router.get('/saletotal', (req, res) => {
+	 let item = req.query.params;
+	 let [t1, t2] = item;
+	 let sql = `select * from total where date between '${t1}' and '${t2}'`
+	 connection.query(sql, (err, data) => {
+		 if (err) throw err;
+		 if(data.length != 0){
+		     res.send(data)
+		 }else{
+		     res.send(data)
+		 }
+	 })
+ })
+ // 进货统计
+  router.get('/goodstotal', (req, res) => {
+ 	 let item = req.query.params;
+ 	 let [t1, t2] = item;
+ 	 let sql = `select * from total where date between '${t1}' and '${t2}'`
+ 	 connection.query(sql, (err, data) => {
+ 		 if (err) throw err;
+ 		 if(data.length != 0){
+ 		     res.send(data)
+ 		 }else{
+ 		     res.send(data)
+ 		 }
+ 	 })
+ })
  module.exports = router;
